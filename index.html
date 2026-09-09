@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spesial Buat Kesayanganku ❤️</title>
+    <link rel="preconnect" href="https://googleapis.com">
+    <link rel="preconnect" href="https://gstatic.com" crossorigin>
+    <link href="https://googleapis.com/css2?family=Fredoka:wght@300..700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-color: #fff5f7;
+            --main-color: #ff8da1;
+            --dark-color: #d94b68;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Poppins', sans-serif; background-color: var(--bg-color); color: #4a4a4a; text-align: center; overflow-x: hidden; }
+        
+        /* Layar Pembuka Pertama dengan Nailong */
+        .welcome-screen {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(135deg, #fff0f3 0%, #ffe3e8 100%);
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            z-index: 9999; transition: opacity 0.8s ease, visibility 0.8s;
+        }
+        .welcome-screen.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+        .welcome-card {
+            background: white; padding: 30px; border-radius: 24px;
+            box-shadow: 0 10px 30px rgba(255, 141, 161, 0.2); max-width: 90%; width: 340px;
+            border: 3px solid var(--main-color);
+        }
+        .welcome-gif { width: 150px; height: 150px; margin-bottom: 20px; object-fit: contain; }
+        h1.lucu { font-family: 'Fredoka', sans-serif; color: var(--dark-color); font-size: 20px; margin-bottom: 15px; }
+        .btn-buka {
+            font-family: 'Fredoka', sans-serif; background-color: var(--main-color); color: white;
+            border: none; padding: 12px 35px; font-size: 18px; border-radius: 50px; cursor: pointer;
+            box-shadow: 0 5px 15px rgba(255, 141, 161, 0.4);
+        }
+        
+        /* Kontainer Kuis Pertanyaan */
+        .quiz-container {
+            max-width: 400px; margin: 80px auto; padding: 25px; background: white;
+            border-radius: 24px; border: 3px solid var(--main-color);
+            box-shadow: 0 10px 30px rgba(255, 141, 161, 0.15);
+        }
+        .quiz-container.hidden { display: none; }
+        .quiz-gif { width: 130px; height: 130px; margin-bottom: 15px; object-fit: contain; }
+        .quiz-text { font-family: 'Fredoka', sans-serif; font-size: 18px; color: var(--dark-color); margin-bottom: 20px; }
+        .btn-group { display: flex; justify-content: center; gap: 15px; margin-top: 20px; position: relative; }
+        .btn-choice {
+            font-family: 'Fredoka', sans-serif; padding: 10px 25px; font-size: 16px;
+            border: none; border-radius: 50px; cursor: pointer; transition: 0.2s;
+        }
+        .btn-yes { background-color: var(--main-color); color: white; }
+        .btn-no { background-color: #e0e0e0; color: #666; position: relative; }
+        .input-jawaban {
+            width: 100%; padding: 12px; border-radius: 12px; border: 2px solid var(--main-color);
+            font-family: 'Poppins', sans-serif; font-size: 14px; outline: none; resize: none; margin-bottom: 15px;
+        }
+        
+        /* Konten Utama (Terbuka Setelah Kuis Selesai) */
+        .main-content { display: none; }
+        .main-content.visible { display: block; }
+        .container { max-width: 500px; margin: 0 auto; padding: 20px; }
+        .judul-utama { font-family: 'Fredoka', sans-serif; color: var(--dark-color); font-size: 32px; margin-top: 30px; }
+        .decor-nailong { width: 120px; margin: 20px auto 0 auto; animation: bounce 2s infinite alternate; }
+        @keyframes bounce { 0% { transform: translateY(0); } 100% { transform: translateY(-10px); } }
+        
+        /* Surat Long Text */
+        .surat-box {
+            background: white; padding: 30px 20px; border-radius: 24px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 3px dashed var(--main-color);
+            text-align: left; margin: 30px 0; line-height: 1.8;
+        }
+        .surat-box h2 { font-family: 'Fredoka', sans-serif; color: var(--dark-color); margin-bottom: 15px; text-align: center; }
+        .long-text { white-space: pre-line; font-size: 14px; color: #555; }
+        
+        /* Galeri */
+        .gallery-grid { display: grid; grid-template-columns: 1fr; gap: 25px; margin: 30px 0; }
+        .photo-card {
+            background: white; padding: 15px; border-radius: 8px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.06); border: 1px solid #ffe3e8; transform: rotate(var(--rotasi));
+        }
+        .photo-card img, .photo-card video { width: 100%; height: 320px; object-fit: cover; border-radius: 4px; background-color: #f0f0f0; }
+        .photo-caption { font-family: 'Fredoka', sans-serif; margin-top: 12px; font-size: 15px; color: var(--dark-color); }
+        
+        /* Pemutar Musik */
+        .audio-player {
+            position: fixed; bottom: 20px; right: 20px; background: white;
+            padding: 8px 16px; border-radius: 50px; box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            display: flex; align-items: center; gap: 8px; z-index: 999; border: 2px solid var(--main-color);
+        }
+        .btn-mute { background: var(--main-color); color: white; border: none; width: 32px; height: 32px; border-radius: 50%; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+    <!-- 🎵 File Lagu Latar otomatis membaca file lagu.mp3 di foldermu -->
+    <audio id="musikLatar" loop>
+        <source src="lagu.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Layar Pembuka Pertama (Dilengkapi Tema Nailong) -->
+    <div class="welcome-screen" id="welcomeScreen">
+        <div class="welcome-card">
+            <img class="welcome-gif" src="https://giphy.com" alt="Nailong">
+            <h1 class="lucu">Halo Cantik! Ada kuis spesial nih buat kamu... ✨</h1>
+            <button class="btn-buka" onclick="bukaWeb()">Mulai Kuis ❤️</button>
+        </div>
+    </div>
+
+    <!-- Tombol Musik Mengambang -->
+    <div class="audio-player">
+        <span style="font-size: 11px; font-weight: bold; color: var(--dark-color)">🎵 Musik</span>
+        <button class="btn-mute" id="btnMute" onclick="toggleMusik()">🔊</button>
+    </div>
+
+    <!-- ==================== KELOMPOK KUIS INTERAKTIF ==================== -->
+    <!-- Pertanyaan 1 -->
+    <div class="quiz-container" id="quiz1">
+        <img class="quiz-gif" src="https://giphy.com">
+        <div class="quiz-text" id="tanya1">Kamu sayang aku ga? 🥺</div>
+        <div class="btn-group">
+            <button class="btn-choice btn-yes" onclick="nextQuiz(1)">Sayang ❤️</button>
+            <button class="btn-choice btn-no" id="btnNo1" onclick="tolakJawab(1)">Tidak 😜</button>
+        </div>
+    </div>
+
+    <!-- Pertanyaan 2 -->
+    <div class="quiz-container hidden" id="quiz2">
+        <img class="quiz-gif" src="https://giphy.com">
+        <div class="quiz-text" id="tanya2">Ayang suka ga sama sifat jail aku? 🤭</div>
+        <div class="btn-group">
+            <button class="btn-choice btn-yes" onclick="nextQuiz(2)">Suka 🥰</button>
+            <button class="btn-choice btn-no" id="btnNo2" onclick="tolakJawab(2)">Tidak 😤</button>
+        </div>
+    </div>
+
+    <!-- Pertanyaan 3 -->
+    <div class="quiz-container hidden" id="quiz3">
+        <img class="quiz-gif" src="https://giphy.com">
+        <div class="quiz-text">Selama hubungan ini apa hal yang paling buat ayang senang? 🤔</div>
+        <textarea class="input-jawaban" id="jawabanKetik" rows="4" placeholder="Ketik jawaban ayang di sini..."></textarea>
+        <button class="btn-choice btn-yes" style="width: 100%;" onclick="selesaiKuis()">Kirim & Lihat Kejutan ❤️</button>
+    </div>
+
+
+    <!-- ==================== KONTEN KEJUTAN UTAMA ==================== -->
+    <div class="main-content" id="kontenUtama">
+        <div class="container">
+            <header>
+                <h1 class="judul-utama">Happy Birthday, Sayang! 🎂🎉</h1>
+                <img class="decor-nailong" src="https://giphy.com" alt="Nailong Dance">
+                <p style="margin-top: 10px; font-size: 15px;">Selamat bertambah usia untuk orang favoritku di dunia! 💛</p>
+            </header>
+
+            <!-- 📝 Surat Long Text -->
+            <div class="surat-box">
+                <h2>Surat Spesial Buat Kamu 📝</h2>
+                <div class="long-text">
+                    Hai Sayang,
+
+                    Selamat ulang tahun ya! Di hari yang sangat spesial ini, aku cuma mau mengucapkan terima kasih banyak karena kamu sudah hadir ke dunia ini dan menjadi bagian paling indah dalam perjalanan hidupku.
+
+                    Makasih ya udah selalu sabar menghadapi sifat jail aku, makasih udah selalu ada di hari-hari susah maupun senang. Aku selalu bersyukur setiap hari karena tahu aku punya kamu di sampingku. 
+
+AKUUUUU SAYANGGGGGGGG BANGETTTTT AYANGGGGGGGG SAMAAAAAA AYANGGGGGGGGG MELEBIHIIII SIYAPAAAAAPUNNNN EUMMMMM AKUUUUU JANJIIIII SAMAAAA AYANGGGGGGGG ALHAMDULILLAH AKUUUU SYUDAHHHHH MENCAPAI SEMUAAAA YANGGG AKUUUUU TUJUUUUU AKUUUU INGINNNNN AYANGGGGGGGG OYANGGG PERTAMAAAAAA YANGGGG NGERASAINNNN SEMUWANYAAAAAA, AKUUUUU CINTAAAAAAA BANGETTTTTT SAMAAAAAA AYANGGGGGGGGG DARIIIII DULUUUUU SAMPAIIII SEKARANG WALAUPUN PWASTIIII AYANGGGGGGGG MERASAKANNN PERUBAHAN DI DIRIIII AKUUUUU TAPIIIII AKUUUUU TUHHHH PUNYAAAA TUJUANN YANGGG SAMAAAA DARIIII DULUUUUU DIMANAAAAA AYANGGGGGG BAHAGIAAAAA WALAUPUN CARAAAA AKUUUU JUGAAAAA SALAHHHHH, EUMMMMMN AKUUUUUU PENGENNNNN BANGETTT PELUKKKKKK AYANGGGGGGGG, NGGAK NYANGKAAAA YAHHHHH SAYANGKUUUU KITAAAAA BISAAAAA BERTAHAN LAMAAAA AKUUUUU YAKINNNNN BISAAAAA UBAHHHH NASIBBB KEHIDUPAN KITAAAAA JADIIIII PALINGGGG TERBAIKKK. HIHIHIHIHIIIII KADANGGGG AKUUUUU NANGISSS KARENAAAA BAHAGIAAAA KALOOOO INGETTTT TAHUNNNN 2024 MWEHEHEHEHEHEHE 😁🤭 TAPIIIII CEKALANGGGG EHHHH KITAAAAA SYUDAHHHHH JADIIII PACARRRR, AKUUUUU CINTAAAAAAA BANGETTTTTT AYANGGGGGGGG POKOKNYAAA KALOOOO LIYATYTTT AYANGGGGGGGG SENYUMMMM DUNIAAAA AKUUUU YANGCUNGGG BAHAGIAAAA PADAHALLLL LAGIIII BANYAKKKK PIKIRANNNNN. I LOVE YOU IN EVERY UNIVERSE SAYANGGGKUUUU 🤍🤍🤍 
+
+const musik =
+document.getElementById('musikLatar');
+
+const btnMute =
+document.getElementById('btnMute');
+
+const welcomeScreen =
+document.getElementById('welcomeScreen');
+
+function bukaWeb() {
+    welcomeScreen.classList.add('hidden');
+
+    musik.play().catch(e =>
+        console.log("Musik tertahan oleh privasi browser")
+    );
+}
+
+function toggleMusik() {
+    if (musik.paused) {
+        musik.play();
+        btnMute.innerText = "🔊";
+    } else {
+        musik.pause();
+        btnMute.innerText = "🔇";
+    }
+}
+
+function nextQuiz(currentNumber) {
+    document.getElementById('quiz' + currentNumber)
+        .classList.add('hidden');
+
+    document.getElementById(
+        'quiz' + (currentNumber + 1)
+    ).classList.remove('hidden');
+}
+
+function tolakJawab(number) {
+    if (number === 1) {
+        document.getElementById('tanya1').innerText =
+            "Ih kok pilih tidak! Harus pilih Sayang! 😡❤️";
+    } else if (number === 2) {
+        document.getElementById('tanya2').innerText =
+            "Awas ya! Harus pilih Suka pokoknya! 😤💛";
+    }
+}
+
+function selesaiKuis() {
+    const jawabanKetik =
+        document.getElementById('jawabanKetik').value;
+
+    if (jawabanKetik.trim() === "") {
+        alert("Jawab dulu dong ayang, ketik sesuatu yaaa~ 🥺");
+        return;
+    }
+
+    const nomorWA = "6283178513011";
+
+    const teksPesan =
+        window.encodeURIComponent(
+            "Halo Sayang! Aku sudah isi kuis di web ulang tahunmu 🎁\n\n" +
+            "💬 Hal yang paling buat aku senang selama hubungan ini:\n" +
+            "\"" + jawabanKetik + "\"\n\n" +
+            "Sekarang aku mau lanjut lihat kejutan fotonya ya! ❤️"
+        );
+}
